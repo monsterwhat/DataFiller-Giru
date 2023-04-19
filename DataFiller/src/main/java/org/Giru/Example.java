@@ -26,8 +26,8 @@ public class Example {
             user.setEmail(faker.internet().emailAddress());
             user.setPassword(faker.internet().password());
             user.setPhoto(faker.internet().image());
-            user.setBooked(new String[] {});
-            user.setRole(new ObjectId("60445d9f2c617841b8e02b00"));
+            user.setTours(new String[] {});
+            user.setRole(new ObjectId("641cba942089e0bffd2b9f06"));
 
             // convert the user to JSON
             String userJson = objectMapper.writeValueAsString(user);
@@ -36,6 +36,7 @@ public class Example {
             String userUrl = "http://localhost:3000/api/signup";
             HttpClientUtils.postJson(userUrl, userJson);
 
+            /*
             // create a new tour
             Tour tour = new Tour();
             tour.setName(faker.company().name());
@@ -53,6 +54,8 @@ public class Example {
             // post the tour to the API
             String tourUrl = "http://localhost:3000/api/tours";
             HttpClientUtils.postJson(tourUrl, tourJson);
+             */
+
         }
     }
 }
@@ -63,7 +66,7 @@ class User {
     private String email;
     private String password;
     private String photo;
-    private String[] booked;
+    private String[] tours;
     private ObjectId role;
 
     public String getName() {
@@ -106,12 +109,12 @@ class User {
         this.photo = photo;
     }
 
-    public String[] getBooked() {
-        return booked;
+    public String[] getTours() {
+        return tours;
     }
 
-    public void setBooked(String[] booked) {
-        this.booked = booked;
+    public void setTours(String[] tours) {
+        this.tours = tours;
     }
 
     public ObjectId getRole() {
@@ -131,6 +134,7 @@ class Tour {
     private String location;
     private String description;
     private String[] images;
+    private boolean active;
     private ObjectId operator;
 
     public String getName() {
@@ -196,6 +200,12 @@ class Tour {
     public void setOperator(ObjectId operator) {
         this.operator = operator;
     }
+
+    public boolean getActive(){ return active; }
+
+    public void setActive(boolean active) { this.active = active; }
+
+
 }
 
 class HttpClientUtils {
@@ -208,6 +218,8 @@ class HttpClientUtils {
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode < 200 || statusCode >= 300) {
             throw new RuntimeException("HTTP POST request failed with status code: " + statusCode);
+        }else{
+            System.out.println("HTTP POST request succeeded with status code: " + statusCode);
         }
     }
 }
